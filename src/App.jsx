@@ -7,7 +7,6 @@ function App() {
   const [actors, setActors] = useState([])
   const [allActors, setAllActors] = useState([])
   const [value, setValue] = useState('')
-  const [filteredActors, setFilteredActors] = useState(allActors)
 
   const fetchActress = () => {
     axios.get('https://lanciweb.github.io/demo/api/actresses/').then(res => {
@@ -21,22 +20,17 @@ function App() {
     })
   }
 
-  const render = () => {
-    setAllActors([...actress])
-  }
-
 
   useEffect(() => {
     fetchActress()
     fetchActors()
-    render()
-    
-    const filtered = allActors.filter((act) => {
-      return act.name.toLowerCase().includes(value.toLowerCase())
-    })
+  }, [])
 
-    setFilteredActors(filtered)
-  }, [value])
+  useEffect(() => {
+    setAllActors([...actress, ...actors])
+  }, [actress, actors])
+
+  
 
   return (
     <>
@@ -46,8 +40,8 @@ function App() {
         <input type="text" className="form-control form-control-lg border-0 shadow-sm mb-5" placeholder="Search..." value={value} onChange={e => setValue(e.target.value)} />
         <div className="row  row-cols-3 mb-5">
 
-          {allActors.map((act) => {
-            return <Card act={act} key={act.id} />
+          {allActors.map((act, i) => {
+            return <Card act={act} key={i} />
           })}
 
         </div>
