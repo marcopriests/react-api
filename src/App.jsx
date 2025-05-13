@@ -4,6 +4,7 @@ import Card from "./components/Card"
 
 function App() {
   const [actress, setActress] = useState([])
+  const [actors, setActors] = useState([])
 
   const fetchActress = () => {
     axios.get('https://lanciweb.github.io/demo/api/actresses/').then(res => {
@@ -11,9 +12,16 @@ function App() {
     })
   }
 
+  const fetchActors = () => {
+    axios.get('https://lanciweb.github.io/demo/api/actors/').then(res => {
+      setActors(res.data)
+    })
+  }
+
 
   useEffect(() => {
     fetchActress()
+    fetchActors()
   }, [])
 
 
@@ -24,11 +32,21 @@ function App() {
 
         <input type="text" className="form-control form-control-lg border-0 shadow-sm mb-5" placeholder="Search..." />
 
+        <h3 className="mb-3">Actresses</h3>
+        <div className="row  row-cols-3 mb-5">
+
+          {actress.map((act) => {
+            return <Card act={act} key={act.id} />
+          })}
+
+        </div>
+
+        <h3 className="mb-3">Actors</h3>
         <div className="row  row-cols-3">
 
-            {actress.map((act) => {
-              return <Card actress={act} key={act.id} />
-            })}
+          {actors.map((act) => {
+            return <Card act={act} key={act.id} />
+          })}
 
         </div>
       </div>
